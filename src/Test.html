@@ -1,0 +1,82 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>E-presrction</title>
+        <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js" integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="style.css">
+        
+        <div id="logo">
+        <img src="https://www.nhs.uk/nhscwebservices/documents/logo1.jpg" width="350" height="50">
+        </div>
+    </head>
+
+    <body>
+
+        <h1> Presrction Form </h1>
+        <!-- <button id="connectButton" onclick="bundle.connect()">Connect</button> -->
+
+        <script type="text/javascript">
+            async function loadWeb3() {
+                if (window.ethereum) {
+                    window.web3 = new Web3(window.ethereum);
+                    window.ethereum.enable();
+                }
+            }
+           
+            async function loadContract() {
+                const abi = "./abi.js"
+                const contractAccount = "0xd9145CCE52D386f254917e481eB44e9943F39138";
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
+                const signer = provider.getSigner();
+                return await new window.web3.eth.Contract(abi,contractAccount,signer);
+            }
+            async function load() {
+            await loadWeb3();
+            window.contract = await loadContract();
+            }
+
+            load();
+
+            async function getCurrentAccount() {
+                const accounts = await window.web3.eth.getAccounts();
+                return accounts[0];
+            }
+
+            async function approved() {
+            const account = await getCurrentAccount();
+            const  GPToApprove = await window.ontract.methods.GPToApprove().send({ from: account });
+            }
+        </script>
+
+        <form style="float: left;" method="bundle.execute()" onsubmit="alert('Form data will be submitted to the server!');">
+            <br> <label>Doctor Address:</label> <input type="text" name="docAdd" required></br>
+            <br><label>Patient Address</label> <input type="text" name="patAdd" required></br>
+            <br><label>PIPcode</label> <input type="text" name="pipCode" required></br>
+            <br><label>Medication Name:</label> <input type="text" name="medName" required></br>
+            <br><label>Dosage</label> <input type="text" name="dosage" required> </br>
+            <br><label>Dosage Unit</label> <input type="text" name="dosUnit" required> </br> 
+            <br><label>Number of Pills</label> <input type="text" name="noPill" required> </br>
+            <br><label>Repeat per day</label> <input type="text" name="repeatPrs" required></br>
+            <br><label>Specfic Time</label> </br>
+                <div required>
+                    <input type="checkbox" id="TakeIn" name="Take in" >
+                        <label for="TakeIt">Morning</label>
+                    <input type="checkbox" id="TakeIn" name="Take in" >
+                        <label for="TakeIt">Afternoon</label>
+                    <input type="checkbox" id="TakeIn" name="Take in">
+                        <label for="TakeIt">Evening</label>
+                </div>
+             <br><label>Before or After meal</label> <select name="prsTime" id="cars" required>
+                <option value="beforeMeal">Before</option>
+                <option value="afterbMeal">After</option>
+                </select></br>
+            <br> <label>Date Given</label> <input type="date" id="datePrsGiven" name="datePrsGiven" required></br>
+            <br> <label>Expiry Date</label> <input type="date" id="datePrsExpiry" name="datePrsExpiry" required></br>
+            <br></br>
+        </form>
+       <button onclick="approved();">Submit</button>
+    </body>
+        
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>E-presrction</title>
+        <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js" integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
+        <script language="javascript" type="text/javascript" src="./abi.js"></script> 
+        <script> 
+            window.addEventListener('load', async () => 
+            { 
+                var contract; 
+                const contractAddress = "0xAD833CF6fd545e722A920fb9e56492Ff48F39e90";
+                
+                const contractMessage = async () =>
+                {
+                    contract = new web3.eth.Contract(abi, contractAddress);
+                }
+                if (window.ethereum) 
+                {
+                    window.web3 = new Web3(ethereum); 
+                    try 
+                    {
+                        await ethereum.enable(); 
+                    } 
+                    catch (error) 
+                    { 
+
+                    }
+                }
+                else
+                { 
+                    console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+                }      
+            } );
+        </script>
+        
+        
+       
+    </head> 
+    <body>
+    <div id="logo">
+        <img src="https://www.nhs.uk/nhscwebservices/documents/logo1.jpg" width="350" height="100">
+    </div>
+       <h1> Doctors </h1>
+       <script>
+           
+       </script>
+        <form style="float: left;" action="/examples/html/action.php" method="post" onsubmit="alert('Form data will be submitted to the server!');">
+            <br> <label>Doctor Address:</label> <input type="text" name="docAdd" required></br>
+            <br><label>Patient Address</label> <input type="text" name="patAdd" required></br>
+            <br><label>PIPcode</label> <input type="text" name="pipCode" required></br>
+            <br><label>Medication Name:</label> <input type="text" name="medName" required></br>
+            <br><label>Dosage</label> <input type="text" name="dosage" required> </br>
+            <br><label>Dosage Unit</label> <input type="text" name="dosUnit" required> </br> 
+            <br><label>Number of Pills</label> <input type="text" name="noPill" required> </br>
+            <br><label>Repeat</label> <input type="text" name="repeatPrs" required></br>
+            <br><label>Specfic Time</label> <select name="prsTime" id="cars">
+                <option value="morn">Morning</option>
+                <option value="after">Afternoon</option>
+                <option value="even">Evening</option> 
+            </select></br>
+             <br><label>Before or After meal</label> <select name="prsTime" id="cars">
+                <option value="beforeMeal">Before</option>
+                <option value="afterbMeal">After</option>
+                </select></br>
+            <br> <label>Date Given</label> <input type="date" id="datePrsGiven" name="datePrsGiven"></br>
+            <br> <label>Expiry Date</label> <input type="date" id="datePrsExpiry" name="datePrsExpiry"></br>
+        </form>
+
+
+       
+    </body>
+</html>
+
