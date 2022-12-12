@@ -1,2 +1,2 @@
 # E-Prescription
-Final Project(incomplete) for Blockchain module
+Prescription using smart contract
