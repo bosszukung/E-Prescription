@@ -1,2 +1,3 @@
 # E-Prescription
-Prescription using smart contract
+Electronic Prescription using smart contract
+
