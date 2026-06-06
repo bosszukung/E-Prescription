@@ -1,75 +1,312 @@
-<!DOCTYPE html> 
-<html lang="en"> 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"> <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>E-presrction</title>
-        <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js" integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
-        <script language="javascript" type="text/javascript" src="./abi.js"></script> 
-        <script> 
-            window.addEventListener('load', async () => 
-            { 
-                var contract; 
-                const contractAddress = "0xAD833CF6fd545e722A920fb9e56492Ff48F39e90";
-                
-                const contractMessage = async () =>
-                {
-                    contract = new web3.eth.Contract(abi, contractAddress);
-                }
-                if (window.ethereum) 
-                {
-                    window.web3 = new Web3(ethereum); 
-                    try 
-                    {
-                        await ethereum.enable(); 
-                    } 
-                    catch (error) 
-                    { 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>E-Prescription - Blockchain Healthcare</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+    <script src="./abi.js"></script>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Header -->
+        <div class="head">
+            <div class="logo">
+                <h2>💊 E-Prescription</h2>
+            </div>
+            <div class="menu">
+                <button id="connectWallet" class="btn-wallet">Connect MetaMask</button>
+                <span id="userAddress" class="wallet-info"></span>
+            </div>
+        </div>
 
-                    }
-                }
-                else
-                { 
-                    console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
-                }      
-            } );
-        </script>
-        
-        
-       
-    </head> 
-    <body>
-    <div id="logo">
-        <img src="https://www.nhs.uk/nhscwebservices/documents/logo1.jpg" width="350" height="100">
+        <!-- Navigation -->
+        <nav class="topnav">
+            <a href="#" class="active">Home</a>
+            <a href="#doctor-section">Doctors</a>
+            <a href="#patient-section">Patients</a>
+            <a href="#pharmacist-section">Pharmacists</a>
+            <a href="#about">About</a>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="col-container">
+            <!-- Doctor Section -->
+            <section id="doctor-section" class="content-section">
+                <h1>👨‍⚕️ Doctor - Issue Prescription</h1>
+                <div class="form-container">
+                    <form id="prescriptionForm" class="prescription-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="patientAddress">Patient Address:</label>
+                                <input type="text" id="patientAddress" name="patientAddress" 
+                                       placeholder="0x..." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="pipCode">PIP Code:</label>
+                                <input type="text" id="pipCode" name="pipCode" 
+                                       placeholder="7-digit code" maxlength="7" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="medicationName">Medication Name:</label>
+                                <input type="text" id="medicationName" name="medicationName" 
+                                       placeholder="e.g., Aspirin" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="dosage">Dosage:</label>
+                                <input type="number" id="dosage" name="dosage" 
+                                       placeholder="Amount" min="1" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="dosageUnit">Dosage Unit:</label>
+                                <select id="dosageUnit" name="dosageUnit" required>
+                                    <option value="">Select Unit</option>
+                                    <option value="mg">mg (Milligrams)</option>
+                                    <option value="ml">ml (Milliliters)</option>
+                                    <option value="tablets">Tablets</option>
+                                    <option value="capsules">Capsules</option>
+                                    <option value="grams">Grams</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="numPills">Number of Doses:</label>
+                                <input type="number" id="numPills" name="numPills" 
+                                       placeholder="Total doses" min="1" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="repeat">Frequency (times/day):</label>
+                                <input type="number" id="repeat" name="repeat" 
+                                       placeholder="e.g., 2" min="1" max="12" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="specificTime">Time of Day:</label>
+                                <select id="specificTime" name="specificTime" required>
+                                    <option value="">Select Time</option>
+                                    <option value="Morning">Morning</option>
+                                    <option value="Afternoon">Afternoon</option>
+                                    <option value="Evening">Evening</option>
+                                    <option value="Night">Night</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="beforeAfter">Relative to Meals:</label>
+                                <select id="beforeAfter" name="beforeAfter" required>
+                                    <option value="">Select Option</option>
+                                    <option value="Before Meal">Before Meal</option>
+                                    <option value="After Meal">After Meal</option>
+                                    <option value="With Meal">With Meal</option>
+                                    <option value="Anytime">Anytime</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="datePrescriptionIssued">Date Issued:</label>
+                                <input type="date" id="datePrescriptionIssued" 
+                                       name="datePrescriptionIssued" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="datePrescriptionExpiry">Expiry Date:</label>
+                                <input type="date" id="datePrescriptionExpiry" 
+                                       name="datePrescriptionExpiry" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-submit">Issue Prescription</button>
+                        <button type="reset" class="btn-reset">Clear Form</button>
+                    </form>
+                    <div id="formMessage" class="message"></div>
+                </div>
+            </section>
+
+            <!-- Patient Section -->
+            <section id="patient-section" class="content-section">
+                <h1>👤 Patient - My Prescriptions</h1>
+                <div class="patient-container">
+                    <button id="loadPrescriptions" class="btn-primary">Load My Prescriptions</button>
+                    <div id="prescriptionsList" class="prescriptions-list"></div>
+                </div>
+            </section>
+
+            <!-- Pharmacist Section -->
+            <section id="pharmacist-section" class="content-section">
+                <h1>💉 Pharmacist - Dispense Medication</h1>
+                <div class="pharmacist-container">
+                    <div class="form-group">
+                        <label for="dispensePrescriptionId">Prescription ID:</label>
+                        <input type="number" id="dispensePrescriptionId" 
+                               placeholder="Enter prescription ID" min="1">
+                    </div>
+                    <button id="dispenseBtn" class="btn-primary">Dispense Medication</button>
+                    <div id="dispenseMessage" class="message"></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 E-Prescription. All rights reserved. | Secure Blockchain Healthcare Solution</p>
+        </footer>
     </div>
-       <h1> Doctors </h1>
-       <script>
-           
-       </script>
-        <form style="float: left;" action="/examples/html/action.php" method="post" onsubmit="alert('Form data will be submitted to the server!');">
-            <br> <label>Doctor Address:</label> <input type="text" name="docAdd" required></br>
-            <br><label>Patient Address</label> <input type="text" name="patAdd" required></br>
-            <br><label>PIPcode</label> <input type="text" name="pipCode" required></br>
-            <br><label>Medication Name:</label> <input type="text" name="medName" required></br>
-            <br><label>Dosage</label> <input type="text" name="dosage" required> </br>
-            <br><label>Dosage Unit</label> <input type="text" name="dosUnit" required> </br> 
-            <br><label>Number of Pills</label> <input type="text" name="noPill" required> </br>
-            <br><label>Repeat</label> <input type="text" name="repeatPrs" required></br>
-            <br><label>Specfic Time</label> <select name="prsTime" id="cars">
-                <option value="morn">Morning</option>
-                <option value="after">Afternoon</option>
-                <option value="even">Evening</option> 
-            </select></br>
-             <br><label>Before or After meal</label> <select name="prsTime" id="cars">
-                <option value="beforeMeal">Before</option>
-                <option value="afterbMeal">After</option>
-                </select></br>
-            <br> <label>Date Given</label> <input type="date" id="datePrsGiven" name="datePrsGiven"></br>
-            <br> <label>Expiry Date</label> <input type="date" id="datePrsExpiry" name="datePrsExpiry"></br>
-        </form>
 
+    <script>
+        let web3;
+        let contract;
+        let userAccount;
+        const contractAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138"; // Update with deployed address
 
-       
-    </body>
+        // Initialize Web3 and Contract
+        window.addEventListener('load', async () => {
+            if (window.ethereum) {
+                try {
+                    web3 = new Web3(window.ethereum);
+                    const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+                    if (accounts.length > 0) {
+                        userAccount = accounts[0];
+                        updateWalletDisplay();
+                    }
+                } catch (error) {
+                    console.error('Web3 initialization error:', error);
+                }
+            }
+        });
+
+        // Connect Wallet
+        document.getElementById('connectWallet').addEventListener('click', async () => {
+            if (window.ethereum) {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    userAccount = accounts[0];
+                    web3 = new Web3(window.ethereum);
+                    contract = new web3.eth.Contract(abi, contractAddress);
+                    updateWalletDisplay();
+                    showMessage('✅ Wallet connected successfully!', 'success');
+                } catch (error) {
+                    showMessage('❌ Failed to connect wallet: ' + error.message, 'error');
+                }
+            } else {
+                showMessage('❌ Please install MetaMask!', 'error');
+            }
+        });
+
+        // Update wallet display
+        function updateWalletDisplay() {
+            const display = document.getElementById('userAddress');
+            if (userAccount) {
+                display.textContent = `Connected: ${userAccount.substring(0, 6)}...${userAccount.substring(38)}`;
+                document.getElementById('connectWallet').textContent = 'Connected ✓';
+                document.getElementById('connectWallet').disabled = true;
+            }
+        }
+
+        // Form submission
+        document.getElementById('prescriptionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!userAccount) {
+                showMessage('❌ Please connect your wallet first', 'error');
+                return;
+            }
+            
+            try {
+                const formData = new FormData(e.target);
+                const issueDate = Math.floor(new Date(formData.get('datePrescriptionIssued')).getTime() / 1000);
+                const expiryDate = Math.floor(new Date(formData.get('datePrescriptionExpiry')).getTime() / 1000);
+                
+                const tx = await contract.methods.issuePrescription(
+                    formData.get('patientAddress'),
+                    formData.get('pipCode'),
+                    formData.get('medicationName'),
+                    formData.get('dosage'),
+                    formData.get('dosageUnit'),
+                    formData.get('numPills'),
+                    formData.get('repeat'),
+                    formData.get('specificTime'),
+                    formData.get('beforeAfter'),
+                    issueDate,
+                    expiryDate
+                ).send({ from: userAccount });
+                
+                showMessage('✅ Prescription issued successfully!', 'success');
+                e.target.reset();
+            } catch (error) {
+                showMessage('❌ Error issuing prescription: ' + error.message, 'error');
+            }
+        });
+
+        // Load prescriptions
+        document.getElementById('loadPrescriptions').addEventListener('click', async () => {
+            if (!userAccount) {
+                showMessage('❌ Please connect your wallet first', 'error');
+                return;
+            }
+            
+            try {
+                const prescriptions = await contract.methods.getMyPrescriptions().call({ from: userAccount });
+                const listDiv = document.getElementById('prescriptionsList');
+                
+                if (prescriptions.length === 0) {
+                    listDiv.innerHTML = '<p>No prescriptions found</p>';
+                    return;
+                }
+                
+                let html = '<table class="prescriptions-table"><thead><tr><th>ID</th><th>Doctor</th><th>Medication</th><th>Dosage</th><th>Expiry</th></tr></thead><tbody>';
+                for (let id of prescriptions) {
+                    const rx = await contract.methods.getPrescription(id).call();
+                    const expiryDate = new Date(rx.expirationTime * 1000).toLocaleDateString();
+                    html += `<tr><td>${id}</td><td>${rx.GP.substring(0, 10)}...</td><td>${rx.medicationName}</td><td>${rx.dosage} ${rx.dosageUnit}</td><td>${expiryDate}</td></tr>`;
+                }
+                html += '</tbody></table>';
+                listDiv.innerHTML = html;
+            } catch (error) {
+                showMessage('❌ Error loading prescriptions: ' + error.message, 'error');
+            }
+        });
+
+        // Dispense medication
+        document.getElementById('dispenseBtn').addEventListener('click', async () => {
+            if (!userAccount) {
+                showMessage('❌ Please connect your wallet first', 'error');
+                return;
+            }
+            
+            const prescriptionId = document.getElementById('dispensePrescriptionId').value;
+            if (!prescriptionId) {
+                showMessage('❌ Please enter prescription ID', 'error');
+                return;
+            }
+            
+            try {
+                await contract.methods.dispenseMedication(prescriptionId).send({ from: userAccount });
+                showMessage('✅ Medication dispensed successfully!', 'success');
+                document.getElementById('dispensePrescriptionId').value = '';
+            } catch (error) {
+                showMessage('❌ Error dispensing medication: ' + error.message, 'error');
+            }
+        });
+
+        // Utility function to show messages
+        function showMessage(msg, type) {
+            const msgDiv = document.getElementById('formMessage') || document.getElementById('dispenseMessage');
+            if (msgDiv) {
+                msgDiv.textContent = msg;
+                msgDiv.className = `message ${type}`;
+            }
+        }
+    </script>
+</body>
 </html>
-
